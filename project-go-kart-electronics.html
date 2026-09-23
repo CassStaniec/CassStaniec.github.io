@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Go-Kart — Electronics — Cass Staniec</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+/* Video is stored sideways: rotate it 90deg left so it plays as landscape.
+   The stage keeps the same 260px height as the photos beside it; the video
+   element is sized with swapped dimensions, then rotated to fill the stage. */
+.rot-stage{
+  position:relative;
+  height:260px;
+  overflow:hidden;
+  background:#000;
+  container-type:size;
+}
+.gallery .rot-stage video{
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:100cqh;   /* stage height becomes the video's width */
+  height:100cqw;  /* stage width becomes the video's height */
+  object-fit:contain;
+  transform:translate(-50%,-50%) rotate(-90deg);
+  cursor:pointer;
+}
+/* Custom controls (native ones would rotate with the video) */
+.vc{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:8px 10px;
+  border-top:1px solid var(--rule);
+  font-family:'IBM Plex Mono',monospace;
+  font-size:0.72rem;
+  color:var(--grey);
+}
+.vc button{
+  font:inherit;
+  color:var(--ink);
+  background:none;
+  border:1px solid var(--rule);
+  padding:3px 8px;
+  min-width:56px;
+  cursor:pointer;
+}
+.vc button:hover{color:var(--accent);border-color:var(--accent);}
+.vc input[type=range]{flex:1;min-width:0;accent-color:var(--accent);}
+.vc .vc-time{white-space:nowrap;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back-link" href="project-go-kart.html">&larr; back to go-kart overview</a>
+
+  <h2 class="project-title">Electronics</h2>
+  <p class="project-summary">
+    Wiring, throttle and kill-switch systems, and electrical integration on the go-kart.
+  </p>
+
+  <div class="gallery">
+    <figure>
+      <div class="rot-stage">
+        <video id="kartVideo" preload="metadata" playsinline>
+          <source src="gokart-electronics.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="vc">
+        <button type="button" id="kartPlay" aria-label="Play or pause video">Play</button>
+        <input type="range" id="kartSeek" min="0" max="1000" value="0" aria-label="Seek">
+        <span class="vc-time" id="kartTime">0:00 / 0:00</span>
+      </div>
+      <figcaption>Electronics — wiring and system walkthrough (<a href="gokart-electronics.mp4">download</a>)</figcaption>
+    </figure>
+    <figure>
+      <a href="#lb-electronics-2"><img src="gokart-electronics-2.jpg" alt="Go-kart electronics photo 2"></a>
+      <figcaption>Electronics — photo 2</figcaption>
+    </figure>
+    <figure>
+      <a href="#lb-electronics-3"><img src="gokart-electronics-3.jpg" alt="Go-kart electronics photo 3"></a>
+      <figcaption>Electronics — photo 3</figcaption>
+    </figure>
+    <figure>
+      <a href="#lb-electronics-4"><img src="gokart-electronics-4.jpg" alt="Go-kart electronics photo 4"></a>
+      <figcaption>Electronics — photo 4</figcaption>
+    </figure>
+  </div>
+
+  <div id="lb-electronics-2" class="lightbox">
+    <a href="#" class="lightbox-backdrop"></a>
+    <a href="#" class="lightbox-close">&times;</a>
+    <a href="#"><img src="gokart-electronics-2.jpg" alt="Go-kart electronics photo 2"></a>
+  </div>
+  <div id="lb-electronics-3" class="lightbox">
+    <a href="#" class="lightbox-backdrop"></a>
+    <a href="#" class="lightbox-close">&times;</a>
+    <a href="#"><img src="gokart-electronics-3.jpg" alt="Go-kart electronics photo 3"></a>
+  </div>
+  <div id="lb-electronics-4" class="lightbox">
+    <a href="#" class="lightbox-backdrop"></a>
+    <a href="#" class="lightbox-close">&times;</a>
+    <a href="#"><img src="gokart-electronics-4.jpg" alt="Go-kart electronics photo 4"></a>
+  </div>
+
+  <footer>
+    Built by Cass Staniec — Aerospace &amp; Mechanical Engineering, WMU
+  </footer>
+</div>
+
+<script>
+(function(){
+  var v = document.getElementById('kartVideo'),
+      b = document.getElementById('kartPlay'),
+      s = document.getElementById('kartSeek'),
+      t = document.getElementById('kartTime');
+
+  function fmt(x){
+    if(!isFinite(x)) return '0:00';
+    var m = Math.floor(x/60), r = Math.floor(x%60);
+    return m + ':' + (r < 10 ? '0' : '') + r;
+  }
+  function update(){
+    s.value = v.duration ? (v.currentTime / v.duration) * 1000 : 0;
+    t.textContent = fmt(v.currentTime) + ' / ' + fmt(v.duration);
+  }
+  function toggle(){ v.paused ? v.play() : v.pause(); }
+
+  b.addEventListener('click', toggle);
+  v.addEventListener('click', toggle);
+  v.addEventListener('play',  function(){ b.textContent = 'Pause'; });
+  v.addEventListener('pause', function(){ b.textContent = 'Play'; });
+  v.addEventListener('ended', function(){ b.textContent = 'Play'; });
+  v.addEventListener('timeupdate', update);
+  v.addEventListener('loadedmetadata', update);
+  s.addEventListener('input', function(){
+    if(v.duration) v.currentTime = (s.value / 1000) * v.duration;
+  });
+})();
+</script>
+</body>
+</html>
