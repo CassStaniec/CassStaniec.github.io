@@ -19,11 +19,27 @@
   </p>
 
   <div class="gallery">
-    <figure>
-      <a href="#lb-fabrication-1"><video src="gokart-fabrication-1.mp4" controls muted playsinline preload="metadata" aria-label="Go-kart fabrication video 1"></video></a>
-      <figcaption>Fabrication — video 1</figcaption>
+        <figure class="vid">
+      <div class="rot-stage" data-rotate="none">
+        <video preload="metadata" playsinline>
+          <source src="gokart-fabrication-1.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="vc">
+        <button type="button" class="vc-play" aria-label="Play or pause video">Play</button>
+        <input type="range" class="vc-seek" min="0" max="1000" value="0" aria-label="Seek">
+        <span class="vc-time">0:00 / 0:00</span>
+      </div>
+      <figcaption>
+        <span class="cap-title">Fabrication — video 1</span>
+        <span class="cap-desc">
+          A finished, fully working mockup of the go-kart&rsquo;s motor system, built and tested on the bench
+          before anything went into the kart. The clip shows the motor running on its own electronics, so the
+          wiring and control layout could be proven out first. That same layout is what I then carried over
+          to the real build.
+        </span>
+      </figcaption>
     </figure>
-    <figure>
       <a href="#lb-fabrication-2"><img src="gokart-fabrication-2.jpg" alt="Go-kart fabrication photo 2"></a>
       <figcaption>Fabrication — photo 2</figcaption>
     </figure>
